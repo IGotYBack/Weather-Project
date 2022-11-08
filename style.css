@@ -374,8 +374,8 @@ select {
     width: 33%;
 }
 
-.width25 {
-    width: 25%;
+.width20 {
+    width: 20%;
 }
 
 .widthContent {
@@ -518,7 +518,7 @@ COMPOSITION
 
 /* ===GRID=== */
 
-.weatherCard {
+/* .weatherCard {
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 1fr;
@@ -535,10 +535,14 @@ COMPOSITION
 
 .weatherDatas {
     grid-area: weatherDatas;
-}
+} */
 
 /* 
 .bgImg {
     background-image: url(./assets/ATOMIUM-TodayOut-0621\ -\ Version\ 2.jpg);
     background-size: cover;
 } */
+
+.imgOfCity {
+    height: 200px;
+}

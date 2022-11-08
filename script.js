@@ -3,8 +3,11 @@ console.log("konékté")
 const submitBtn = document.querySelector('.submitBtn');
 // console.log(submitBtn);
 const cityFromUser = document.getElementById('cityFromUser');
-console.log(cityFromUser);
+// console.log(cityFromUser);
 const weatherInDOM = document.querySelector('.weather')
+
+let weatherByDay = [[], [], [], [], []]
+
 
 // Change name to coordinates
 async function coordinateWeather(cityChoosen) {
@@ -22,7 +25,7 @@ async function coordinateWeather(cityChoosen) {
 }
 
 async function cityWeather(lat, long) {
-    const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=a5cf13039d6af02d4d2993ee2c8d7191&units=metric&lang=fr`)
+    const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${long}&appid=a5cf13039d6af02d4d2993ee2c8d7191&units=metric&lang=fr`)
 
     if (!response.ok) {
         const message = `An error has occured: ${response.status}`;
@@ -30,12 +33,30 @@ async function cityWeather(lat, long) {
     }
 
     const getTheWeather = await response.json();
+    // console.log(getTheWeather)
+    weatherByDay = [[], [], [], [], []]
+    let i = 0
+    let c = 0
+    getTheWeather.list.forEach((weatherEntry) => {
+        if (i < 8) {
+            weatherByDay[c].push(weatherEntry)
+        } else {
+            c++
+            weatherByDay[c].push(weatherEntry)
+            i = 0
+        }
+
+        i++
+    })
+    // console.log(weatherByDay)
     return getTheWeather
 }
 
 submitBtn.addEventListener('click', () => {
     cityChoosen = cityFromUser.value;
-    console.log(cityChoosen);
+    // console.log(cityC/Zhoosen);
+
+    addToDOM()
 
     coordinateWeather(cityChoosen).then(coordinatesOFCity => {
 
@@ -46,10 +67,16 @@ submitBtn.addEventListener('click', () => {
         // console.log(long);
 
         cityWeather(lat, long).then(cityWeather => {
-            console.log(cityWeather);
+            // console.log(cityWeather);
+            // console.log(weatherByDay)
+            weatherByDay.forEach(day => {
+                addToDataCard(day[0])
+            })
         })
     })
-    addToDOM()
+
+
+
 })
 
 const addToDOM = () => {
@@ -57,8 +84,27 @@ const addToDOM = () => {
 
     const divCityImg = document.createElement('div');
     const cityName = document.createElement('h2');
-
     const divcityData = document.createElement('div');
+
+    cityName.innerText = cityFromUser.value.toUpperCase()
+    divCityImg.classList.add('imgOfCity', 'displayFlex', 'alignCenter', 'justifyCenter', 'width100')
+    divWeatherCard.classList.add('displayFlexColumn', 'alignCenter', 'marginNormal')
+    divcityData.classList.add('displayFlex', 'justifyEvenly', 'width100')
+    divcityData.setAttribute('city', cityFromUser.value)
+
+
+    weatherInDOM.append(divWeatherCard);
+    divWeatherCard.append(divCityImg, divcityData);
+    divCityImg.append(cityName);
+}
+
+const addToDataCard = (day) => {
+    console.log(day)
+    // console.log(day.weather[0].description)
+    const divcityData = document.querySelector(`[city=${cityFromUser.value}]`)
+    // console.log(divcityData)
+    const divDatasCard = document.createElement('div');//div data
+    const dayTitle = document.createElement('h2')//jour en question
 
     const descriptionDiv = document.createElement('div');
     const weatherDescription = document.createElement('h3');
@@ -72,18 +118,18 @@ const addToDOM = () => {
     const weatherHumidity = document.createElement('h3');
     const humidityInfos = document.createElement('p');
 
-    cityName.innerText = cityFromUser.value
-    weatherDescription.innerText = 'Weather';
-    weatherTemp.innerText = 'Temperature';
-    weatherHumidity.innerText = 'Humidity';
 
-    weatherInDOM.append(divWeatherCard);
-    divWeatherCard.append(divCityImg, divcityData);
-    divCityImg.append(cityName);
-    divcityData.append(descriptionDiv, tempDiv, humidityDiv);
+    weatherDescription.innerText = 'Weather';
+    descriptionInfos.innerText = day.weather[0].description;
+    weatherTemp.innerText = 'Temperature';
+    tempInfos.innerText = `${day.main.temp}°C`;
+    weatherHumidity.innerText = 'Humidity';
+    humidityInfos.innerText = `${day.main.humidity}%`;
+
+    divcityData.append(divDatasCard);
+    divDatasCard.append(dayTitle, descriptionDiv, tempDiv, humidityDiv);
+
     descriptionDiv.append(weatherDescription, descriptionInfos);
     tempDiv.append(weatherTemp, tempInfos);
     humidityDiv.append(weatherHumidity, humidityInfos)
 }
-
-
