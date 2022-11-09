@@ -9,20 +9,27 @@
 
     <!-- CSS -->
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
 
     <!-- JS -->
     <script src="script.js" defer></script>
 </head>
 
 <body>
-    <header class="bgSecondary200 centerText">
+    <header class="bgPrimary100 centerText paddingNormal">
         <p>Do you want to know ...</p>
         <h1>The Way There</h1>
     </header>
     <main>
-        <div class="inputArea">
+        <div class="inputArea paddingNormal">
             <input type="text" name="city" id="cityFromUser" placeholder="Choose a City">
             <button class="submitBtn">Submit</button>
+            <!-- <input type="text" name="city" id="compareData" placeholder="Choose a City"> -->
+            <button class="clearBtn">Clear</button>
+            <!-- <button class="compareBtn">Compare</button> -->
         </div>
         <div class="weather">
             <!--    <section class="weatherCard displayFlexColumn alignCstenter">
